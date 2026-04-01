@@ -78,34 +78,22 @@ body {
   background: transparent;
 }
 
-/* Plain workspace canvas — atmosphere only appears through glass layers */
+/* Plain workspace canvas — fills the viewport; extends behind header + prompt bar */
 .app-bg {
   position: relative;
   min-height: 100dvh;
+  height: 100%;
   background: var(--background);
   isolation: isolate;
 }
 
-/* —— World simulation atmosphere: orbs + wireframe globe (behind chrome) —— */
+/* —— World simulation atmosphere: full-bleed behind all chrome including prompt dock —— */
 .app-world-atmosphere {
   position: absolute;
   inset: 0;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  /* Fade out near the bottom so orbs / rings don’t read behind the prompt dock */
-  mask-image: linear-gradient(
-    to bottom,
-    black 0%,
-    black min(72%, calc(100% - 14rem)),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    black 0%,
-    black min(72%, calc(100% - 14rem)),
-    transparent 100%
-  );
 }
 
 .app-world-sphere {

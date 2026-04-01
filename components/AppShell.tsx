@@ -34,7 +34,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div
       data-chrome={minimalRails ? "minimal" : "expanded"}
-      className={`app-bg relative z-10 flex h-full min-h-0 flex-col overflow-hidden transition-[gap,padding] duration-500 ease-[cubic-bezier(0.34,1.25,0.64,1)] lg:flex-row lg:p-3 ${
+      className={`app-bg relative z-10 flex h-full min-h-[100dvh] flex-col overflow-hidden transition-[gap,padding] duration-500 ease-[cubic-bezier(0.34,1.25,0.64,1)] lg:flex-row lg:p-3 ${
         minimalRails ? "lg:gap-1.5" : "lg:gap-3"
       }`}
     >

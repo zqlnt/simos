@@ -29,7 +29,7 @@ const tiles: {
   {
     href: "/simium",
     title: "Simium",
-    description: "Profile, configurator, library, and entry flows.",
+    description: "Profile, configurator, library, entry.",
     icon: LayoutGrid,
     tint: "from-blue-400/25 to-indigo-400/15",
     viz: NeuralNetViz,
@@ -37,7 +37,7 @@ const tiles: {
   {
     href: "/simulator",
     title: "Simulator",
-    description: "Dome pipeline: pre, live, and publish.",
+    description: "Dome pipeline — pre, live, publish.",
     icon: PlayCircle,
     tint: "from-violet-400/25 to-fuchsia-400/15",
     viz: CadGridViz,
@@ -45,7 +45,7 @@ const tiles: {
   {
     href: "/simulatia",
     title: "Simulatia",
-    description: "World, factions, agents, and automation.",
+    description: "Worlds, factions, agents.",
     icon: Globe2,
     tint: "from-cyan-400/20 to-sky-400/15",
     viz: NetworkDotsViz,
@@ -53,7 +53,7 @@ const tiles: {
   {
     href: "/business",
     title: "Business operations",
-    description: "Tasks, calendars, roadmaps, and deadlines.",
+    description: "Tasks, calendars, roadmaps.",
     icon: Briefcase,
     tint: "from-amber-400/20 to-orange-400/12",
     viz: LineGraphViz,
@@ -90,27 +90,29 @@ export default function HomePage() {
           <Link
             key={href}
             href={href}
-            className="glass-kpi group relative overflow-hidden rounded-[1.75rem] p-6 transition-transform duration-200 ease-out hover:-translate-y-0.5 sm:p-7"
+            className="glass-kpi group relative overflow-hidden rounded-[1.5rem] p-4 transition-transform duration-200 ease-out hover:-translate-y-0.5 sm:rounded-[1.65rem] sm:p-5"
           >
             <div
-              className={`pointer-events-none absolute -right-6 -top-6 h-32 w-32 rounded-full bg-gradient-to-br ${tint} blur-2xl`}
+              className={`pointer-events-none absolute -right-6 -top-6 h-28 w-28 rounded-full bg-gradient-to-br ${tint} blur-2xl`}
               aria-hidden
             />
-            <div className="glass-corner-glow opacity-40" aria-hidden />
-            <div className="relative z-10 flex flex-col gap-4">
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/50 text-[var(--app-primary)] ring-1 ring-white/60">
-                <Icon className="h-5 w-5" strokeWidth={1.65} />
+            <div className="glass-corner-glow opacity-35" aria-hidden />
+            <div className="relative z-10 flex flex-col gap-2.5 sm:gap-3">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/50 text-[var(--app-primary)] ring-1 ring-white/60 sm:h-10 sm:w-10 sm:rounded-2xl">
+                <Icon className="h-[1.05rem] w-[1.05rem] sm:h-5 sm:w-5" strokeWidth={1.65} />
               </span>
-              <div className="space-y-2">
-                <h2 className="text-lg font-semibold tracking-tight text-gray-900">
+              <div className="space-y-0.5 sm:space-y-1">
+                <h2 className="text-base font-semibold tracking-tight text-gray-900 sm:text-[1.05rem]">
                   {title}
                 </h2>
-                <p className="text-sm leading-relaxed text-gray-600">
+                <p className="text-[13px] leading-snug text-gray-600 sm:text-sm sm:leading-relaxed">
                   {description}
                 </p>
               </div>
-              <Viz />
-              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--app-primary)]">
+              <div className="[&>div]:h-[3.5rem] sm:[&>div]:h-16">
+                <Viz />
+              </div>
+              <span className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[var(--app-primary)] sm:text-sm">
                 Open
                 <ArrowUpRight
                   className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"

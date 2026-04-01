@@ -18,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full min-h-0 antialiased">
-      <body className="h-full min-h-0 overflow-hidden">
+    <html lang="en" className="h-full min-h-[100dvh] antialiased">
+      <body className="min-h-[100dvh] h-full overflow-hidden bg-[var(--background)]">
         <AppChromeProvider>
           <AppShell>{children}</AppShell>
         </AppChromeProvider>
