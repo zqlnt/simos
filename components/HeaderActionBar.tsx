@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ChevronUp, Menu, PanelLeft, PanelRight, RotateCcw } from "lucide-react";
 import { DockRailCircle } from "@/components/DockChrome";
+import { SimLogo } from "@/components/SimLogo";
 import { WorkspaceScopePills } from "@/components/WorkspaceScopePills";
 import { useAppChrome } from "@/context/AppChromeContext";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
@@ -49,28 +50,26 @@ export function HeaderActionBar({
         className="dock-ambient dock-ambient--workspace-scroll relative z-0 shrink-0"
         data-workspace-scroll="true"
       >
-        <div className="relative z-[1] px-2 pb-1.5 pt-[calc(0.375rem+env(safe-area-inset-top))] sm:px-3 sm:pb-1.5 sm:pt-[calc(0.5rem+env(safe-area-inset-top))] lg:px-3 lg:pb-2 lg:pt-[calc(0.5rem+env(safe-area-inset-top))]">
-          <div className="mx-auto flex max-w-[min(80rem,100%)] items-center gap-1.5 sm:gap-2">
+        <div className="relative z-[1] px-2 pb-1 pt-[calc(0.25rem+env(safe-area-inset-top))] sm:px-3 sm:pb-1.5 sm:pt-[calc(0.4rem+env(safe-area-inset-top))] lg:px-3 lg:pb-1.5 lg:pt-[calc(0.45rem+env(safe-area-inset-top))]">
+          <div className="mx-auto flex max-w-[min(80rem,100%)] items-center justify-center gap-1.5 sm:gap-2">
             <DockRailCircle side="left" forceVisible />
-            <div className="glass-dock flex min-h-[2.5rem] min-w-0 flex-1 items-center gap-1.5 overflow-hidden rounded-full px-2 py-1 sm:min-h-[2.75rem] sm:gap-2 sm:px-3">
-              <span className="hidden shrink-0 text-[10px] font-semibold uppercase tracking-[0.12em] text-gray-500 sm:inline sm:text-[11px]">
-                Workspace
+            <Link
+              href="/"
+              className={`glass-dock glass-dock--scroll-mini inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full px-2 py-0.5 sm:h-9 sm:gap-2 sm:px-2.5 sm:py-1 ${logoFocus}`}
+              aria-label="SimOS home"
+            >
+              <span className="flex h-5 w-[2.85rem] shrink-0 items-center justify-start overflow-hidden sm:h-6 sm:w-[3.25rem]">
+                <SimLogo
+                  width={80}
+                  height={26}
+                  className="max-h-[1.15rem] w-auto object-contain object-left sm:max-h-[1.35rem]"
+                  alt=""
+                />
               </span>
-              <div className="min-w-0 flex-1 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                <div className="flex min-w-0 justify-center sm:justify-start">
-                  <WorkspaceScopePills variant="dock" />
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={resetMainView}
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/35 bg-white/20 text-gray-600 hover:bg-white/40"
-                aria-label="Reset view"
-                title="Scroll to top"
-              >
-                <RotateCcw className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
-              </button>
-            </div>
+              <span className="shrink-0 text-[11px] font-semibold tracking-tight text-gray-900 sm:text-[13px]">
+                SimOS
+              </span>
+            </Link>
             <DockRailCircle side="right" forceVisible />
           </div>
         </div>
