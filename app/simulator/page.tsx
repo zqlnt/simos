@@ -14,6 +14,11 @@ import {
   WorldsNestedViz,
 } from "@/components/viz";
 
+/** Local asset under public/images/simulator/ — filename is URL-encoded for spaces/parentheses */
+const SIMULATOR_PREVIEW_MP4 =
+  "/images/simulator/" +
+  encodeURIComponent("AI Video Generator Feb 2 2026 (1) (2).mp4");
+
 export default function SimulatorPage() {
   return (
     <div className="relative z-10 mx-auto max-w-4xl space-y-10 sm:space-y-12">
@@ -23,6 +28,29 @@ export default function SimulatorPage() {
         tagline="Worlds within worlds"
         subtitle="Timelines, a 3D asset library, and Blender-style studio environments — author nested 4D spaces, preview in VR, then ship through the Dome pipeline."
       />
+
+      <section
+        id="simulator-preview"
+        className="glass-panel scroll-mt-28 overflow-hidden rounded-[1.5rem] p-2 sm:p-3"
+        aria-label="Simulator preview video"
+      >
+        <div className="relative mx-auto w-full max-w-3xl overflow-hidden rounded-[1.25rem] bg-black/[0.06] ring-1 ring-white/25">
+          <div className="relative aspect-video w-full">
+            <video
+              className="absolute inset-0 h-full w-full object-contain"
+              controls
+              playsInline
+              preload="metadata"
+              aria-label="Simulator pipeline preview"
+            >
+              <source src={SIMULATOR_PREVIEW_MP4} type="video/mp4" />
+            </video>
+          </div>
+        </div>
+        <p className="mt-2 px-1 text-center text-[11px] text-gray-500 sm:px-2">
+          Preview — Dome pipeline and simulation surface (local asset).
+        </p>
+      </section>
 
       <section
         id="environment"
