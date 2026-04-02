@@ -1,15 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { SimLogo } from "@/components/SimLogo";
+import { PRELOADER_LOOP_VIDEO_SRC } from "@/lib/preloader-assets";
 
 type Phase = "loading" | "exit" | "done";
 
 /**
- * Full-viewport splash while the document (and fonts) settle — then a soft
- * fade/scale exit. Keeps the shell mounted underneath; no layout removal.
+ * Full-viewport splash: looping video + liquid glass panel while the document
+ * (and fonts) settle — then a soft fade/scale exit.
  */
 export function AppPreloader() {
   const [phase, setPhase] = useState<Phase>("loading");
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const play = () => {
+      const p = v.play();
+      if (p !== undefined && typeof p.catch === "function") {
+        p.catch(() => undefined);
+      }
+    };
+    play();
+    v.addEventListener("loadeddata", play, { once: true });
+    return () => v.removeEventListener("loadeddata", play);
+  }, []);
 
   useEffect(() => {
     const minMs = 580;
@@ -71,45 +88,66 @@ export function AppPreloader() {
 
   return (
     <div
-      role="progressbar"
-      aria-valuemin={0}
-      aria-valuemax={100}
+      role="status"
+      aria-live="polite"
       aria-busy={phase === "loading"}
-      aria-label="Loading"
-      className={`app-preloader fixed inset-0 z-[250] flex flex-col items-center justify-center bg-[var(--background)] will-change-[opacity,transform] motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:ease-out ${
+      aria-label="Simulating Sim"
+      className={`app-preloader fixed inset-0 z-[250] flex flex-col items-center justify-center overflow-hidden bg-black will-change-[opacity,transform] motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:ease-out ${
         phase === "exit"
-          ? "pointer-events-none opacity-0 motion-reduce:scale-100 scale-[0.96]"
+          ? "pointer-events-none opacity-0 motion-reduce:scale-100 scale-[0.97]"
           : "opacity-100 scale-100"
       } transition-[opacity,transform] duration-[520ms] ease-[cubic-bezier(0.32,0.72,0,1)]`}
     >
+      {/* Reduced-motion: soft gradient stand-in (no video motion) */}
       <div
-        className="pointer-events-none absolute inset-0 overflow-hidden"
+        className="app-preloader-motion-fallback pointer-events-none absolute inset-0 hidden bg-[var(--background)] motion-reduce:block"
+        aria-hidden
+      />
+      <div
+        className="app-preloader-motion-fallback pointer-events-none absolute inset-0 hidden motion-reduce:block"
         aria-hidden
       >
-        <div className="app-preloader-orb absolute -left-[20%] top-[18%] h-[min(55vw,420px)] w-[min(55vw,420px)] rounded-full bg-gradient-to-br from-[var(--app-primary)]/[0.09] via-transparent to-transparent blur-3xl" />
-        <div className="app-preloader-orb-delay absolute -right-[15%] bottom-[12%] h-[min(48vw,360px)] w-[min(48vw,360px)] rounded-full bg-gradient-to-tl from-fuchsia-400/[0.06] via-transparent to-transparent blur-3xl" />
+        <div className="app-preloader-orb absolute -left-[20%] top-[18%] h-[min(55vw,420px)] w-[min(55vw,420px)] rounded-full bg-gradient-to-br from-[var(--app-primary)]/[0.12] via-transparent to-transparent blur-3xl" />
+        <div className="app-preloader-orb-delay absolute -right-[15%] bottom-[12%] h-[min(48vw,360px)] w-[min(48vw,360px)] rounded-full bg-gradient-to-tl from-fuchsia-400/[0.08] via-transparent to-transparent blur-3xl" />
       </div>
 
-      <div className="relative flex flex-col items-center gap-6 px-8">
+      <video
+        ref={videoRef}
+        className="app-preloader-video pointer-events-none absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+        src={PRELOADER_LOOP_VIDEO_SRC}
+        muted
+        loop
+        playsInline
+        autoPlay
+        preload="auto"
+        aria-hidden
+      />
+
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-black/25 motion-reduce:from-black/20 motion-reduce:via-transparent motion-reduce:to-black/15"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_45%,transparent_0%,rgba(0,0,0,0.35)_100%)] motion-reduce:opacity-60"
+        aria-hidden
+      />
+
+      <div className="relative z-10 flex max-w-[min(92vw,420px)] flex-col items-center px-6">
         <div
-          className={`flex h-14 w-14 items-center justify-center rounded-[1.35rem] bg-white/70 shadow-lg shadow-black/[0.06] ring-1 ring-white/80 backdrop-blur-md transition-transform duration-700 ease-[cubic-bezier(0.34,1.28,0.64,1)] ${
-            phase === "exit" ? "scale-90" : "scale-100"
+          className={`glass-panel app-preloader-glass pointer-events-none flex w-full flex-col items-center gap-4 px-10 py-9 text-center shadow-2xl shadow-black/20 transition-transform duration-700 ease-[cubic-bezier(0.34,1.28,0.64,1)] ${
+            phase === "exit" ? "scale-[0.96]" : "scale-100"
           }`}
         >
-          <span className="text-lg font-semibold tracking-tight text-[var(--foreground)]">
-            Sim
-          </span>
-        </div>
-
-        <div className="flex w-[min(200px,55vw)] flex-col items-center gap-3">
-          <div className="h-1 w-full overflow-hidden rounded-full bg-black/[0.06] ring-1 ring-white/40">
-            <div
-              className="app-preloader-bar h-full w-[42%] rounded-full bg-gradient-to-r from-[var(--app-primary)]/90 to-[var(--app-primary)]/50"
-              aria-hidden
-            />
-          </div>
-          <p className="text-center text-[11px] font-medium uppercase tracking-[0.2em] text-gray-500">
-            Preparing workspace
+          <SimLogo
+            width={152}
+            height={52}
+            priority
+            centered
+            className="justify-center"
+            alt="Sim"
+          />
+          <p className="text-[15px] font-semibold tracking-[-0.02em] text-[var(--foreground)] sm:text-base">
+            Simulating Sim
           </p>
         </div>
       </div>
