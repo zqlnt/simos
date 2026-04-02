@@ -47,6 +47,7 @@ export default function SimulatorPage() {
           <div className="min-w-0">
             <ProductLoopVideo
               src={PRODUCT_PREVIEW_VIDEOS.simulator}
+              loading="eager"
               hoverTitle="Studio loop"
               hoverSubline="Structure, light, editable scenarios"
             />

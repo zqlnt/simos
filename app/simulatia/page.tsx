@@ -45,6 +45,7 @@ export default function SimulatiaPage() {
           <div className="min-w-0">
             <ProductLoopVideo
               src={PRODUCT_PREVIEW_VIDEOS.simulatia}
+              loading="eager"
               hoverTitle="Workforce motion"
               hoverSubline="Coordinated work across systems"
             />

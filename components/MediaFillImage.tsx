@@ -4,6 +4,7 @@ export function MediaFillImage({
   src,
   alt,
   priority = false,
+  loading = "lazy",
   aspectClassName = "aspect-[4/3]",
   className = "",
   hoverTitle,
@@ -13,6 +14,8 @@ export function MediaFillImage({
   src: string;
   alt: string;
   priority?: boolean;
+  /** Next/Image loading; default lazy for below-the-fold efficiency. */
+  loading?: "lazy" | "eager";
   aspectClassName?: string;
   className?: string;
   /** Shown on hover (md+) over a gradient; keeps layout calm on touch */
@@ -37,6 +40,7 @@ export function MediaFillImage({
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40rem"
         className={`object-cover object-center ${premiumHover ? "transition-transform duration-[520ms] ease-[cubic-bezier(0.34,1.28,0.64,1)] motion-reduce:transition-none group-hover:scale-[1.03]" : ""}`}
         priority={priority}
+        loading={loading}
       />
       {hasOverlay && (
         <div

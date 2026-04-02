@@ -4,6 +4,7 @@ import { AppShell } from "@/components/AppShell";
 import { AppPreloader } from "@/components/AppPreloader";
 import { AppChromeProvider } from "@/context/AppChromeContext";
 import { WorldAtmosphere } from "@/components/WorldAtmosphere";
+import { media } from "@/lib/media-assets";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -27,6 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full min-h-[100dvh] min-h-[100lvh] bg-[var(--background)] antialiased">
+      <head>
+        <link rel="preload" href={media.sim.pulsePrimary} as="video" type="video/mp4" />
+      </head>
       <body className="relative min-h-[100dvh] min-h-[100lvh] min-h-[-webkit-fill-available]">
         {/* Full-viewport base — fixed layers are siblings of overflow-hidden shell so body overflow does not clip them */}
         <div

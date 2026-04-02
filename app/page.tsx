@@ -57,23 +57,31 @@ export default function HomePage() {
           </p>
           <p className="text-sm leading-relaxed text-gray-700">{simNarrative.heroLine}</p>
         </div>
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          <div className="space-y-2">
-            <ProductLoopVideo
-              src={media.sim.pulsePrimary}
-              hoverTitle="Pulse"
-              hoverSubline="System rhythm across active processes"
-            />
-            <p className="text-xs leading-relaxed text-gray-600">{simNarrative.pulse}</p>
-          </div>
-          <div className="space-y-2">
-            <ProductLoopVideo
-              src={media.sim.pulseB}
-              hoverTitle="Pulse — alternate phase"
-              hoverSubline="Same signal, inverted read"
-            />
-            <p className="text-xs leading-relaxed text-gray-600">{simNarrative.pulse}</p>
-          </div>
+        <div className="space-y-2">
+          <ProductLoopVideo
+            src={media.sim.pulsePrimary}
+            loading="eager"
+            hoverTitle="Pulse"
+            hoverSubline="System rhythm across active processes"
+          />
+          <p className="text-xs leading-relaxed text-gray-600">{simNarrative.pulse}</p>
+        </div>
+      </section>
+
+      <section
+        className="glass-panel mx-auto w-full max-w-4xl space-y-4 overflow-hidden rounded-[1.5rem] p-3 sm:p-4"
+        aria-label="SIM — alternate pulse"
+      >
+        <p className="px-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-500">
+          Alternate phase
+        </p>
+        <div className="space-y-2">
+          <ProductLoopVideo
+            src={media.sim.pulseB}
+            hoverTitle="Pulse — alternate phase"
+            hoverSubline="Same signal, inverted read"
+          />
+          <p className="text-xs leading-relaxed text-gray-600">{simNarrative.pulse}</p>
         </div>
       </section>
 
@@ -217,10 +225,12 @@ export default function HomePage() {
         <p className="px-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-500">
           Step inside
         </p>
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-center">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
           <div className="min-w-0">
             <ProductLoopVideo
               src={media.simium.stepIn3}
+              aspectClassName="aspect-[9/16]"
+              trimStartSeconds={1}
               hoverTitle="Step inside"
               hoverSubline="Overview to direct control"
             />

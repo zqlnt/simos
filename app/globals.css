@@ -1362,6 +1362,45 @@ body {
   border-radius: var(--shell-radius);
 }
 
+/* Product loop video — placeholder while lazy-loading / decoding */
+.video-load-placeholder {
+  background: linear-gradient(
+    145deg,
+    rgba(30, 35, 45, 0.35) 0%,
+    rgba(20, 22, 28, 0.5) 50%,
+    rgba(35, 40, 52, 0.4) 100%
+  );
+}
+
+.video-load-placeholder-shimmer {
+  background: linear-gradient(
+    110deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 45%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 55%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: video-placeholder-shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes video-placeholder-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-load-placeholder-shimmer {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
 /* —— App preloader — video loop + liquid glass (orbs when reduced motion) —— */
 .app-preloader-orb {
   animation: app-preloader-orb-float 4.8s ease-in-out infinite alternate;
@@ -1370,6 +1409,38 @@ body {
 .app-preloader-orb-delay {
   animation: app-preloader-orb-float 5.4s ease-in-out infinite alternate;
   animation-delay: -1.4s;
+}
+
+/* Preloader — iOS-style app icon: squircle with frosted glass */
+.app-preloader-icon-squircle {
+  position: relative;
+  isolation: isolate;
+  flex-shrink: 0;
+  border-radius: 22%;
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.22) 48%,
+    rgba(248, 250, 255, 0.18) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.18),
+    0 2px 12px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(32px) saturate(1.38);
+  -webkit-backdrop-filter: blur(32px) saturate(1.38);
+}
+
+.app-preloader-icon-squircle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  opacity: 0.9;
 }
 
 .app-preloader-glass {
@@ -1408,6 +1479,11 @@ body {
 
   .app-preloader-glass {
     animation: none;
+  }
+
+  .app-preloader-icon-squircle {
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
   }
 }
 

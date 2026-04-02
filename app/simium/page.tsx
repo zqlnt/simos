@@ -37,6 +37,8 @@ export default function SimiumPage() {
           <div className="min-w-0">
             <ProductLoopVideo
               src={PRODUCT_PREVIEW_VIDEOS.simium}
+              loading="eager"
+              aspectClassName="aspect-[16/10]"
               hoverTitle="Primary loop"
               hoverSubline="Memory, context, signal flow"
             />
@@ -57,10 +59,12 @@ export default function SimiumPage() {
         <p className="px-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-500">
           Step inside
         </p>
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-center">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
           <div className="min-w-0">
             <ProductLoopVideo
               src={media.simium.stepIn3}
+              aspectClassName="aspect-[9/16]"
+              trimStartSeconds={1}
               hoverTitle="Step inside"
               hoverSubline="Overview to direct control"
             />
@@ -93,7 +97,7 @@ export default function SimiumPage() {
             <MediaFillImage
               src={media.simium.designJan}
               alt="Simium authored panel"
-              aspectClassName="aspect-[4/3]"
+              aspectClassName="aspect-[3/4]"
               hoverTitle="Authored panel"
               hoverSubline="Identity in the surface"
             />
@@ -116,7 +120,7 @@ export default function SimiumPage() {
             <MediaFillImage
               src={media.simium.handRemoved}
               alt="Simium spatial frame"
-              aspectClassName="aspect-[4/3]"
+              aspectClassName="aspect-[3/4]"
               hoverTitle="Spatial frame"
               hoverSubline="Clean read for the world"
             />
@@ -144,7 +148,7 @@ export default function SimiumPage() {
             <MediaFillImage
               src={media.simium.still3}
               alt="Simium environment still"
-              aspectClassName="aspect-square"
+              aspectClassName="aspect-[4/5]"
               hoverTitle="Environment still"
               hoverSubline="Massing at a glance"
             />
@@ -167,7 +171,7 @@ export default function SimiumPage() {
             <MediaFillImage
               src={media.simium.panelA}
               alt="Simium surface panel"
-              aspectClassName="aspect-square"
+              aspectClassName="aspect-[4/5]"
               hoverTitle="Surface tile"
               hoverSubline="Density and orientation"
             />
@@ -178,7 +182,7 @@ export default function SimiumPage() {
             <MediaFillImage
               src={media.simium.panelB}
               alt="Simium surface panel variant"
-              aspectClassName="aspect-square"
+              aspectClassName="aspect-[4/5]"
               hoverTitle="Variant read"
               hoverSubline="Alternate crop"
             />
@@ -201,7 +205,7 @@ export default function SimiumPage() {
             <MediaFillImage
               src={media.simium.panelC}
               alt="Simium surface panel detail"
-              aspectClassName="aspect-square"
+              aspectClassName="aspect-[4/5]"
               hoverTitle="Detail tile"
               hoverSubline="Tight panel read"
             />
@@ -227,7 +231,7 @@ export default function SimiumPage() {
             <MediaFillImage
               src={media.simium.panelD}
               alt="Simium wide panel"
-              aspectClassName="aspect-[21/9]"
+              aspectClassName="aspect-[2/1]"
               hoverTitle="Wide sweep"
               hoverSubline="Alignment across the full surface"
             />
