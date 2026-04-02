@@ -7,8 +7,8 @@ import { PRELOADER_LOOP_VIDEO_SRC } from "@/lib/preloader-assets";
 type Phase = "loading" | "exit" | "done";
 
 /**
- * Full-viewport splash: looping video + single frosted squircle (concentric radii)
- * and minimal copy — then a soft fade exit.
+ * Full-viewport splash: looping video + frosted squircle, light edge fades and blur
+ * (no dark vignette) — then a soft fade exit.
  */
 export function AppPreloader() {
   const [phase, setPhase] = useState<Phase>("loading");
@@ -86,13 +86,16 @@ export function AppPreloader() {
 
   if (phase === "done") return null;
 
+  const edgeFrom = "from-[var(--background)]";
+  const edgeVia = "via-[var(--background)]/45";
+
   return (
     <div
       role="status"
       aria-live="polite"
       aria-busy={phase === "loading"}
       aria-label="Simulating Sim"
-      className={`app-preloader fixed inset-0 z-[250] flex flex-col items-center justify-center overflow-hidden bg-black will-change-[opacity,transform] motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:ease-out ${
+      className={`app-preloader fixed inset-0 z-[250] flex flex-col items-center justify-center overflow-hidden bg-[var(--background)] will-change-[opacity,transform] motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:ease-out ${
         phase === "exit"
           ? "pointer-events-none opacity-0 motion-reduce:scale-100 scale-[0.985]"
           : "opacity-100 scale-100"
@@ -112,7 +115,7 @@ export function AppPreloader() {
 
       <video
         ref={videoRef}
-        className="app-preloader-video pointer-events-none absolute inset-0 h-full w-full object-cover motion-reduce:hidden"
+        className="app-preloader-video pointer-events-none absolute inset-0 z-0 h-full w-full object-cover motion-reduce:hidden"
         src={PRELOADER_LOOP_VIDEO_SRC}
         muted
         loop
@@ -122,28 +125,34 @@ export function AppPreloader() {
         aria-hidden
       />
 
-      {/* Soft full-screen haze — single blur layer, no nested cards */}
+      {/* Light frosted veil — blur only, no darkening */}
       <div
-        className="pointer-events-none absolute inset-0 bg-black/30 backdrop-blur-[2px] motion-reduce:backdrop-blur-none"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/25 via-black/15 to-black/45 motion-reduce:from-black/15 motion-reduce:via-black/10 motion-reduce:to-black/25"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_42%,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.42)_100%)] motion-reduce:opacity-70"
+        className="pointer-events-none absolute inset-0 z-[1] bg-white/25 backdrop-blur-md motion-reduce:backdrop-blur-sm sm:bg-white/20 sm:backdrop-blur-lg"
         aria-hidden
       />
 
-      <div className="relative z-10 flex max-w-[min(92vw,380px)] flex-col items-center gap-7 px-6">
-        {/* Concentric squircle: outer halo + inner icon — same 22% corner geometry */}
+      {/* White → transparent at edges (top, bottom, sides) */}
+      <div className="pointer-events-none absolute inset-0 z-[2]" aria-hidden>
         <div
-          className={`app-preloader-icon-stack relative flex items-center justify-center transition-transform duration-700 ease-[cubic-bezier(0.34,1.28,0.64,1)] ${
+          className={`absolute inset-x-0 top-0 h-[min(28vh,200px)] bg-gradient-to-b ${edgeFrom} ${edgeVia} to-transparent`}
+        />
+        <div
+          className={`absolute inset-x-0 bottom-0 h-[min(28vh,200px)] bg-gradient-to-t ${edgeFrom} ${edgeVia} to-transparent`}
+        />
+        <div
+          className={`absolute inset-y-0 left-0 w-[min(22vw,120px)] bg-gradient-to-r ${edgeFrom} ${edgeVia} to-transparent`}
+        />
+        <div
+          className={`absolute inset-y-0 right-0 w-[min(22vw,120px)] bg-gradient-to-l ${edgeFrom} ${edgeVia} to-transparent`}
+        />
+      </div>
+
+      <div className="relative z-10 flex max-w-[min(92vw,380px)] flex-col items-center gap-7 px-6">
+        <div
+          className={`relative flex items-center justify-center transition-transform duration-700 ease-[cubic-bezier(0.34,1.28,0.64,1)] ${
             phase === "exit" ? "scale-[0.97]" : "scale-100"
           }`}
         >
-          <div className="app-preloader-icon-halo pointer-events-none absolute inset-[-10px] sm:inset-[-12px]" aria-hidden />
           <div className="app-preloader-icon-squircle relative z-[1] flex h-[min(7.25rem,26vw)] w-[min(7.25rem,26vw)] max-h-[120px] max-w-[120px] items-center justify-center p-[0.65rem] sm:h-[7.5rem] sm:w-[7.5rem] sm:max-h-[120px] sm:max-w-[120px]">
             <SimLogo
               width={92}
@@ -157,12 +166,15 @@ export function AppPreloader() {
         </div>
 
         <div className="flex flex-col items-center gap-4">
-          <p className="text-center text-[15px] font-medium tracking-[-0.02em] text-white/92 drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] sm:text-base">
+          <p className="text-center text-[15px] font-medium tracking-[-0.02em] text-[var(--foreground)] sm:text-base">
             Simulating Sim
           </p>
           <div className="flex w-[min(200px,52vw)] flex-col gap-2">
-            <div className="h-[3px] w-full overflow-hidden rounded-full bg-white/12">
-              <div className="app-preloader-bar h-full w-[38%] rounded-full bg-white/75" aria-hidden />
+            <div className="h-[3px] w-full overflow-hidden rounded-full bg-black/[0.08]">
+              <div
+                className="app-preloader-bar h-full w-[38%] rounded-full bg-[var(--app-primary)]/90"
+                aria-hidden
+              />
             </div>
           </div>
         </div>

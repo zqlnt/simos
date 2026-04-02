@@ -1399,7 +1399,7 @@ body {
   }
 }
 
-/* —— App preloader — video + concentric squircle + simple bar (orbs when reduced motion) —— */
+/* —— App preloader — light blur + white edge fades + squircle + bar (orbs when reduced motion) —— */
 .app-preloader-orb {
   animation: app-preloader-orb-float 4.8s ease-in-out infinite alternate;
 }
@@ -1409,29 +1409,19 @@ body {
   animation-delay: -1.4s;
 }
 
-/* Preloader — concentric squircle halo (same 22% geometry as inner icon) */
-.app-preloader-icon-halo {
-  border-radius: 22%;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(28px) saturate(1.25);
-  -webkit-backdrop-filter: blur(28px) saturate(1.25);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    0 12px 48px rgba(0, 0, 0, 0.2);
-}
-
-/* Inner — single frosted tile (no second glass card) */
+/* Preloader — single frosted squircle (light shell; no outer halo) */
 .app-preloader-icon-squircle {
   position: relative;
   isolation: isolate;
   flex-shrink: 0;
   border-radius: 22%;
-  background: rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(40px) saturate(1.35);
-  -webkit-backdrop-filter: blur(40px) saturate(1.35);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(36px) saturate(1.3);
+  -webkit-backdrop-filter: blur(36px) saturate(1.3);
   box-shadow:
-    0 2px 24px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    0 4px 28px rgba(59, 108, 255, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    inset 0 0 0 1px rgba(255, 255, 255, 0.65);
 }
 
 .app-preloader-icon-squircle::after {
@@ -1481,8 +1471,7 @@ body {
     opacity: 0.85;
   }
 
-  .app-preloader-icon-squircle,
-  .app-preloader-icon-halo {
+  .app-preloader-icon-squircle {
     backdrop-filter: blur(18px) saturate(1.15);
     -webkit-backdrop-filter: blur(18px) saturate(1.15);
   }
