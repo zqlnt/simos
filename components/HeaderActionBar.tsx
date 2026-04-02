@@ -51,26 +51,24 @@ export function HeaderActionBar({
         data-workspace-scroll="true"
       >
         <div className="relative z-[1] px-2 pb-1 pt-[calc(0.25rem+env(safe-area-inset-top))] sm:px-3 sm:pb-1.5 sm:pt-[calc(0.4rem+env(safe-area-inset-top))] lg:px-3 lg:pb-1.5 lg:pt-[calc(0.45rem+env(safe-area-inset-top))]">
-          <div className="mx-auto flex max-w-[min(80rem,100%)] items-center justify-center gap-1.5 sm:gap-2">
-            <DockRailCircle side="left" forceVisible />
+          <div className="mx-auto flex max-w-[min(80rem,100%)] items-center justify-center">
             <Link
               href="/"
-              className={`glass-dock glass-dock--scroll-mini inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full px-2 py-0.5 sm:h-9 sm:gap-2 sm:px-2.5 sm:py-1 ${logoFocus}`}
+              className={`glass-dock glass-dock--scroll-mini inline-flex h-8 shrink-0 items-center gap-0.5 rounded-full px-1.5 py-0.5 sm:h-9 sm:gap-1 sm:px-2 sm:py-1 ${logoFocus}`}
               aria-label="SimOS home"
             >
-              <span className="flex h-5 w-[2.85rem] shrink-0 items-center justify-start overflow-hidden sm:h-6 sm:w-[3.25rem]">
+              <span className="flex h-5 w-[2.5rem] shrink-0 items-center justify-start overflow-hidden sm:h-6 sm:w-[2.85rem]">
                 <SimLogo
-                  width={80}
-                  height={26}
-                  className="max-h-[1.15rem] w-auto object-contain object-left sm:max-h-[1.35rem]"
+                  width={72}
+                  height={24}
+                  className="max-h-[1.1rem] w-auto object-contain object-left sm:max-h-[1.3rem]"
                   alt=""
                 />
               </span>
-              <span className="shrink-0 text-[11px] font-semibold tracking-tight text-gray-900 sm:text-[13px]">
+              <span className="shrink-0 pl-0.5 text-[11px] font-semibold tracking-tight text-gray-900 sm:text-[13px]">
                 SimOS
               </span>
             </Link>
-            <DockRailCircle side="right" forceVisible />
           </div>
         </div>
       </header>
