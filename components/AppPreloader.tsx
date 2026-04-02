@@ -7,8 +7,8 @@ import { PRELOADER_LOOP_VIDEO_SRC } from "@/lib/preloader-assets";
 type Phase = "loading" | "exit" | "done";
 
 /**
- * Full-viewport splash: looping video + liquid glass panel while the document
- * (and fonts) settle — then a soft fade/scale exit.
+ * Full-viewport splash: looping video + single frosted squircle (concentric radii)
+ * and minimal copy — then a soft fade exit.
  */
 export function AppPreloader() {
   const [phase, setPhase] = useState<Phase>("loading");
@@ -94,11 +94,10 @@ export function AppPreloader() {
       aria-label="Simulating Sim"
       className={`app-preloader fixed inset-0 z-[250] flex flex-col items-center justify-center overflow-hidden bg-black will-change-[opacity,transform] motion-reduce:transition-opacity motion-reduce:duration-300 motion-reduce:ease-out ${
         phase === "exit"
-          ? "pointer-events-none opacity-0 motion-reduce:scale-100 scale-[0.97]"
+          ? "pointer-events-none opacity-0 motion-reduce:scale-100 scale-[0.985]"
           : "opacity-100 scale-100"
       } transition-[opacity,transform] duration-[520ms] ease-[cubic-bezier(0.32,0.72,0,1)]`}
     >
-      {/* Reduced-motion: soft gradient stand-in (no video motion) */}
       <div
         className="app-preloader-motion-fallback pointer-events-none absolute inset-0 hidden bg-[var(--background)] motion-reduce:block"
         aria-hidden
@@ -123,32 +122,49 @@ export function AppPreloader() {
         aria-hidden
       />
 
+      {/* Soft full-screen haze — single blur layer, no nested cards */}
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-black/25 motion-reduce:from-black/20 motion-reduce:via-transparent motion-reduce:to-black/15"
+        className="pointer-events-none absolute inset-0 bg-black/30 backdrop-blur-[2px] motion-reduce:backdrop-blur-none"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_45%,transparent_0%,rgba(0,0,0,0.35)_100%)] motion-reduce:opacity-60"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/25 via-black/15 to-black/45 motion-reduce:from-black/15 motion-reduce:via-black/10 motion-reduce:to-black/25"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_42%,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.42)_100%)] motion-reduce:opacity-70"
         aria-hidden
       />
 
-      <div className="relative z-10 flex max-w-[min(92vw,420px)] flex-col items-center px-6">
+      <div className="relative z-10 flex max-w-[min(92vw,380px)] flex-col items-center gap-7 px-6">
+        {/* Concentric squircle: outer halo + inner icon — same 22% corner geometry */}
         <div
-          className={`glass-panel app-preloader-glass pointer-events-none flex w-full flex-col items-center gap-4 px-10 py-9 text-center shadow-2xl shadow-black/20 transition-transform duration-700 ease-[cubic-bezier(0.34,1.28,0.64,1)] ${
-            phase === "exit" ? "scale-[0.96]" : "scale-100"
+          className={`app-preloader-icon-stack relative flex items-center justify-center transition-transform duration-700 ease-[cubic-bezier(0.34,1.28,0.64,1)] ${
+            phase === "exit" ? "scale-[0.97]" : "scale-100"
           }`}
         >
-          <SimLogo
-            width={152}
-            height={52}
-            priority
-            centered
-            className="justify-center"
-            alt="Sim"
-          />
-          <p className="text-[15px] font-semibold tracking-[-0.02em] text-[var(--foreground)] sm:text-base">
+          <div className="app-preloader-icon-halo pointer-events-none absolute inset-[-10px] sm:inset-[-12px]" aria-hidden />
+          <div className="app-preloader-icon-squircle relative z-[1] flex h-[min(7.25rem,26vw)] w-[min(7.25rem,26vw)] max-h-[120px] max-w-[120px] items-center justify-center p-[0.65rem] sm:h-[7.5rem] sm:w-[7.5rem] sm:max-h-[120px] sm:max-w-[120px]">
+            <SimLogo
+              width={92}
+              height={32}
+              priority
+              centered
+              className="relative z-[2] justify-center [&_img]:max-h-[2.35rem] sm:[&_img]:max-h-[2.5rem]"
+              alt="Sim"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center gap-4">
+          <p className="text-center text-[15px] font-medium tracking-[-0.02em] text-white/92 drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] sm:text-base">
             Simulating Sim
           </p>
+          <div className="flex w-[min(200px,52vw)] flex-col gap-2">
+            <div className="h-[3px] w-full overflow-hidden rounded-full bg-white/12">
+              <div className="app-preloader-bar h-full w-[38%] rounded-full bg-white/75" aria-hidden />
+            </div>
+          </div>
         </div>
       </div>
     </div>

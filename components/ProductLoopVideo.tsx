@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 /**
  * Muted autoplay loop — GIF-like embed (no controls). Requires muted for browser autoplay policies.
  * Optional `trimStartSeconds` skips a glitchy lead-in; loops manually from that offset.
- * `loading="lazy"` defers mounting the video until near the viewport; shows a placeholder until decoded.
+ * `loading="lazy"` defers mounting the video until near the viewport; skeleton crossfades to video.
  */
 export function ProductLoopVideo({
   src,
@@ -20,16 +20,12 @@ export function ProductLoopVideo({
 }: {
   src: string;
   className?: string;
-  /** Tailwind aspect ratio, e.g. aspect-[4/3] */
   aspectClassName?: string;
   hoverTitle?: string;
   hoverSubline?: string;
   premiumHover?: boolean;
-  /** Skip this many seconds at the start (and on each loop). Native loop is disabled when set. */
   trimStartSeconds?: number;
-  /** `eager` loads immediately; `lazy` mounts near viewport (default). */
   loading?: "eager" | "lazy";
-  /** Optional still shown until the first frame is available. */
   poster?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -132,7 +128,6 @@ export function ProductLoopVideo({
 
   const videoShown =
     loadVideo && mediaReady && (!useTrim || trimVisible);
-  const showPlaceholder = !videoShown;
   const hasOverlay = Boolean(hoverTitle || hoverSubline);
 
   return (
@@ -145,15 +140,16 @@ export function ProductLoopVideo({
       } ${className}`}
     >
       <div className={`relative w-full overflow-hidden ${aspectClassName}`}>
-        {showPlaceholder ? (
-          <div
-            className="video-load-placeholder pointer-events-none absolute inset-0 z-[1] flex items-center justify-center"
-            aria-hidden
-          >
-            <div className="video-load-placeholder-shimmer absolute inset-0" />
-            <div className="relative h-8 w-8 animate-spin rounded-full border-2 border-white/10 border-t-white/45 opacity-80 motion-reduce:animate-none" />
-          </div>
-        ) : null}
+        <div
+          className={`media-skeleton-layer pointer-events-none absolute inset-0 z-[1] flex flex-col justify-center gap-2.5 p-5 transition-opacity duration-500 ease-out motion-reduce:duration-200 motion-reduce:transition-opacity ${
+            videoShown ? "opacity-0" : "opacity-100"
+          }`}
+          aria-hidden
+        >
+          <div className="media-skeleton-bar h-[42%] max-h-[48%] min-h-[3rem] w-full rounded-[0.65rem] rounded-t-[0.85rem]" />
+          <div className="media-skeleton-bar h-2.5 w-[55%] rounded-full" />
+          <div className="media-skeleton-bar h-2 w-[40%] rounded-full opacity-70" />
+        </div>
 
         {loadVideo ? (
           <video
@@ -171,8 +167,8 @@ export function ProductLoopVideo({
               videoShown ? "opacity-100" : "opacity-0"
             } ${
               premiumHover
-                ? "transition-[opacity,transform] duration-[520ms] ease-[cubic-bezier(0.34,1.28,0.64,1)] motion-reduce:transition-none group-hover:scale-[1.02]"
-                : "transition-opacity duration-300"
+                ? "transition-[opacity,transform] duration-[600ms] ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none group-hover:scale-[1.02]"
+                : "transition-opacity duration-500 ease-out motion-reduce:duration-200"
             }`}
             aria-hidden
           >

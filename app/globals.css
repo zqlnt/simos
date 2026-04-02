@@ -1362,30 +1362,28 @@ body {
   border-radius: var(--shell-radius);
 }
 
-/* Product loop video — placeholder while lazy-loading / decoding */
-.video-load-placeholder {
+/* Media skeletons — video + image placeholders (soft blocks, subtle shimmer) */
+.media-skeleton-layer {
   background: linear-gradient(
     145deg,
-    rgba(30, 35, 45, 0.35) 0%,
-    rgba(20, 22, 28, 0.5) 50%,
-    rgba(35, 40, 52, 0.4) 100%
+    rgba(28, 32, 42, 0.45) 0%,
+    rgba(22, 24, 30, 0.55) 50%,
+    rgba(32, 36, 46, 0.48) 100%
   );
 }
 
-.video-load-placeholder-shimmer {
+.media-skeleton-bar {
   background: linear-gradient(
-    110deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.06) 45%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0.05) 55%,
-    transparent 100%
+    90deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.06) 100%
   );
   background-size: 200% 100%;
-  animation: video-placeholder-shimmer 1.8s ease-in-out infinite;
+  animation: media-skeleton-shimmer 2s ease-in-out infinite;
 }
 
-@keyframes video-placeholder-shimmer {
+@keyframes media-skeleton-shimmer {
   0% {
     background-position: 100% 0;
   }
@@ -1395,13 +1393,13 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .video-load-placeholder-shimmer {
+  .media-skeleton-bar {
     animation: none;
-    opacity: 0.5;
+    opacity: 0.65;
   }
 }
 
-/* —— App preloader — video loop + liquid glass (orbs when reduced motion) —— */
+/* —— App preloader — video + concentric squircle + simple bar (orbs when reduced motion) —— */
 .app-preloader-orb {
   animation: app-preloader-orb-float 4.8s ease-in-out infinite alternate;
 }
@@ -1411,26 +1409,29 @@ body {
   animation-delay: -1.4s;
 }
 
-/* Preloader — iOS-style app icon: squircle with frosted glass */
+/* Preloader — concentric squircle halo (same 22% geometry as inner icon) */
+.app-preloader-icon-halo {
+  border-radius: 22%;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(28px) saturate(1.25);
+  -webkit-backdrop-filter: blur(28px) saturate(1.25);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 12px 48px rgba(0, 0, 0, 0.2);
+}
+
+/* Inner — single frosted tile (no second glass card) */
 .app-preloader-icon-squircle {
   position: relative;
   isolation: isolate;
   flex-shrink: 0;
   border-radius: 22%;
-  background: linear-gradient(
-    155deg,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 255, 255, 0.22) 48%,
-    rgba(248, 250, 255, 0.18) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.58);
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(40px) saturate(1.35);
+  -webkit-backdrop-filter: blur(40px) saturate(1.35);
   box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.18),
-    0 2px 12px rgba(0, 0, 0, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.75),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(32px) saturate(1.38);
-  -webkit-backdrop-filter: blur(32px) saturate(1.38);
+    0 2px 24px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
 .app-preloader-icon-squircle::after {
@@ -1439,14 +1440,11 @@ body {
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-  opacity: 0.9;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
-.app-preloader-glass {
-  backdrop-filter: blur(44px) saturate(1.45);
-  -webkit-backdrop-filter: blur(44px) saturate(1.45);
-  animation: app-preloader-glass-breathe 3.4s var(--ease-ios) infinite alternate;
+.app-preloader-bar {
+  animation: app-preloader-bar-slide 1.35s var(--ease-ios) infinite;
   will-change: transform;
 }
 
@@ -1461,12 +1459,12 @@ body {
   }
 }
 
-@keyframes app-preloader-glass-breathe {
+@keyframes app-preloader-bar-slide {
   0% {
-    transform: translateY(0) scale(1);
+    transform: translateX(-115%);
   }
   100% {
-    transform: translateY(-3px) scale(1.012);
+    transform: translateX(320%);
   }
 }
 
@@ -1477,13 +1475,16 @@ body {
     opacity: 0.9;
   }
 
-  .app-preloader-glass {
+  .app-preloader-bar {
     animation: none;
+    width: 100%;
+    opacity: 0.85;
   }
 
-  .app-preloader-icon-squircle {
-    backdrop-filter: blur(20px) saturate(1.2);
-    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  .app-preloader-icon-squircle,
+  .app-preloader-icon-halo {
+    backdrop-filter: blur(18px) saturate(1.15);
+    -webkit-backdrop-filter: blur(18px) saturate(1.15);
   }
 }
 
