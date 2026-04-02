@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { AppShell } from "@/components/AppShell";
+import { AppPreloader } from "@/components/AppPreloader";
 import { AppChromeProvider } from "@/context/AppChromeContext";
 import { WorldAtmosphere } from "@/components/WorldAtmosphere";
 
@@ -42,6 +43,7 @@ export default function RootLayout({
             <AppShell>{children}</AppShell>
           </AppChromeProvider>
         </div>
+        <AppPreloader />
       </body>
     </html>
   );
