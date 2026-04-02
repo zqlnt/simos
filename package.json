@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -H 127.0.0.1",
-    "dev:clean": "rm -f .next/dev/lock && next dev -H 127.0.0.1",
+    "dev": "next dev",
+    "dev:clean": "rm -f .next/dev/lock && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

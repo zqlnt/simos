@@ -7,6 +7,7 @@ import {
   CalendarDays,
   CheckSquare,
   PanelRight,
+  X,
 } from "lucide-react";
 import { OsAvatar } from "@/components/OsAvatar";
 import { useAppChrome } from "@/context/AppChromeContext";
@@ -41,16 +42,30 @@ const divisions = [
 export function RightSidebar() {
   const pathname = usePathname();
   const lg = useMediaQuery("(min-width: 1024px)");
-  const {
-    rightCollapsed,
-    toggleRight,
-    rightMobileOpen,
-    setRightMobileOpen,
-  } = useAppChrome();
+  const { rightCollapsed, rightMobileOpen, setRightMobileOpen } = useAppChrome();
 
   const inner = (
-    <div className="flex h-full min-h-0 flex-col gap-5 overflow-y-auto px-4 py-5 sm:px-5 sm:py-6">
-      <div className="glass-panel shrink-0 rounded-2xl p-4">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden">
+      {!lg ? (
+        <div className="flex shrink-0 items-center justify-between gap-3 border-b border-white/25 px-4 pb-3 pt-[max(0.35rem,env(safe-area-inset-top))]">
+          <div>
+            <p className="text-[13px] font-semibold tracking-tight text-gray-900">
+              Sim OS
+            </p>
+            <p className="text-[11px] text-gray-500">Assistant & quick panels</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setRightMobileOpen(false)}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/35 bg-white/30 text-gray-700 shadow-sm backdrop-blur-sm transition-colors hover:bg-white/50 active:scale-[0.98]"
+            aria-label="Close Sim OS panel"
+          >
+            <X className="h-5 w-5" strokeWidth={2} aria-hidden />
+          </button>
+        </div>
+      ) : null}
+      <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto overflow-x-hidden overscroll-y-contain px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-5 sm:py-6">
+        <div className="glass-panel shrink-0 rounded-2xl p-4">
         <div className="flex items-start gap-3">
           <OsAvatar />
           <div className="min-w-0 flex-1">
@@ -84,7 +99,7 @@ export function RightSidebar() {
             </p>
           ))}
         </div>
-      </div>
+        </div>
 
       <Link
         href="/organization/calendar"
@@ -184,62 +199,36 @@ export function RightSidebar() {
         <PanelRight className="h-4 w-4" strokeWidth={1.75} />
         Org dashboard
       </Link>
-    </div>
-  );
-
-  const collapsedRail = (
-    <div className="flex h-full min-h-0 flex-col items-center gap-3 overflow-y-auto px-1 py-5">
-      <div className="dock-app-icon flex h-9 w-9 items-center justify-center shadow-sm ring-1 ring-black/[0.08] ring-white/60">
-        <OsAvatar squircle className="!h-8 !w-8 !shadow-none !ring-0" />
       </div>
-      <button
-        type="button"
-        onClick={toggleRight}
-        className="chrome-spring text-[9px] font-semibold uppercase tracking-wider text-gray-400 hover:text-gray-600"
-        aria-label="Expand Sim OS"
-      >
-        ···
-      </button>
-      <Link
-        href="/organization/calendar"
-        className="dock-app-icon flex h-9 w-9 items-center justify-center text-[var(--app-primary)] shadow-sm ring-1 ring-black/[0.06] ring-white/55"
-        title="Calendar"
-      >
-        <CalendarDays className="h-4 w-4" strokeWidth={1.75} />
-      </Link>
-      <Link
-        href="/business#tasks"
-        className="dock-app-icon flex h-9 w-9 items-center justify-center text-gray-500 shadow-sm ring-1 ring-black/[0.06] ring-white/55"
-        title="Tasks"
-      >
-        <CheckSquare className="h-4 w-4" strokeWidth={1.75} />
-      </Link>
     </div>
   );
 
-  const desktopContent = lg && rightCollapsed ? collapsedRail : inner;
+  /* Collapsed on lg: aside is hidden — expand via header DockRailCircle only */
+  const desktopContent = lg && rightCollapsed ? null : inner;
   const mobileVisible = !lg && rightMobileOpen;
 
   return (
-    <>
+    <div className="contents lg:relative lg:block lg:h-0 lg:max-h-0 lg:min-h-0 lg:w-0 lg:shrink-0 lg:flex-none lg:overflow-visible lg:basis-0 lg:max-h-none">
       {rightMobileOpen && !lg ? (
         <button
           type="button"
-          className="fixed inset-0 z-40 bg-slate-900/12 backdrop-blur-[3px] lg:hidden"
+          className="fixed inset-0 z-[70] bg-slate-900/12 backdrop-blur-[3px] lg:hidden"
           aria-label="Close Sim OS panel"
           onClick={() => setRightMobileOpen(false)}
         />
       ) : null}
 
       <aside
-        className={`glass-sidebar-float chrome-spring fixed inset-y-3 right-3 z-50 flex max-h-[calc(100dvh-1.5rem)] min-h-0 flex-col overflow-hidden lg:static lg:inset-auto lg:z-auto lg:my-0 lg:h-full lg:max-h-full lg:translate-x-0 ${
+        className={`glass-sidebar-float chrome-spring fixed z-[90] flex min-h-0 w-[min(22rem,calc(100vw-1.25rem))] touch-manipulation flex-col overflow-hidden transition-[width,box-shadow] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] right-[max(0.75rem,env(safe-area-inset-right))] top-[max(0.75rem,env(safe-area-inset-top))] bottom-[max(0.75rem,env(safe-area-inset-bottom))] max-h-[calc(100dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom)-1.5rem)] lg:inset-y-3 lg:right-3 lg:max-h-[calc(100dvh-1.5rem)] lg:w-[19rem] ${rightCollapsed ? "lg:overflow-visible" : ""} ${
           mobileVisible || lg ? "translate-x-0" : "translate-x-[calc(100%+1rem)]"
         } ${
-          lg && rightCollapsed ? "w-[3.25rem]" : "w-[min(20rem,92vw)] lg:w-[19rem]"
-        }`}
+          lg && rightCollapsed
+            ? "lg:hidden"
+            : ""
+        } ${lg && !rightCollapsed ? "lg:shadow-[-8px_0_32px_rgba(15,25,45,0.12)]" : ""}`}
       >
         {!lg ? (mobileVisible ? inner : null) : desktopContent}
       </aside>
-    </>
+    </div>
   );
 }

@@ -13,41 +13,41 @@ export const navGroups: NavGroup[] = [
   {
     title: "Sim",
     items: [
-      { label: "Home", href: "/" },
-      { label: "About", href: "/about" },
-      { label: "News", href: "/news" },
-      { label: "Contact", href: "/contact" },
+      { label: "Home", href: "/", description: "simOS workspace & shortcuts" },
+      { label: "About", href: "/about", description: "Product story & scope" },
+      { label: "News", href: "/news", description: "Updates & announcements" },
+      { label: "Contact", href: "/contact", description: "Reach the team" },
     ],
   },
   {
     title: "Products",
     items: [
-      { label: "Simium", href: "/simium" },
-      { label: "Simulator", href: "/simulator" },
-      { label: "Simulatia", href: "/simulatia" },
-      { label: "Simulon", href: "/simulon" },
-      { label: "Coming soon", href: "/coming-soon" },
-      { label: "Checkout", href: "/checkout" },
+      { label: "Simium", href: "/simium", description: "Profile, library, entry" },
+      { label: "Simulator", href: "/simulator", description: "Dome pipeline & worlds" },
+      { label: "Simulatia", href: "/simulatia", description: "Agents, cities, factions" },
+      { label: "Simulon", href: "/simulon", description: "Companion surface" },
+      { label: "Coming soon", href: "/coming-soon", description: "Roadmap preview" },
+      { label: "Checkout", href: "/checkout", description: "Plans & billing" },
     ],
   },
   {
     title: "Operations",
     items: [
-      { label: "Business operations", href: "/business" },
-      { label: "Company", href: "/company" },
-      { label: "Operations hub", href: "/operations" },
+      { label: "Business operations", href: "/business", description: "Tasks, finance, roadmaps" },
+      { label: "Company", href: "/company", description: "Structure & logistics" },
+      { label: "Operations hub", href: "/operations", description: "Telemetry & planning grid" },
     ],
   },
   {
     title: "simOS",
-    items: [{ label: "Zero", href: "/zero" }],
+    items: [{ label: "Zero", href: "/zero", description: "Assistant & system entry" }],
   },
   {
     title: "Organization",
     items: [
-      { label: "Dashboard", href: "/organization" },
-      { label: "Calendar", href: "/organization/calendar" },
-      { label: "Building & rooms", href: "/organization/building" },
+      { label: "Dashboard", href: "/organization", description: "Org overview & divisions" },
+      { label: "Calendar", href: "/organization/calendar", description: "Schedules & windows" },
+      { label: "Building & rooms", href: "/organization/building", description: "Spaces, files, floors" },
     ],
   },
 ];

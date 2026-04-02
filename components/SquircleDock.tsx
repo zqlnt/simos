@@ -141,7 +141,7 @@ export function SquircleDock({ className = "" }: { className?: string }) {
       className={`glass-panel rounded-[1.75rem] px-4 py-4 sm:px-5 sm:py-5 ${className}`}
     >
       <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.1em] text-gray-500">
-        Simulation command tray
+        Home screen shortcuts
       </p>
       <div className="flex flex-wrap items-start justify-center gap-3 sm:gap-4">
         <Link

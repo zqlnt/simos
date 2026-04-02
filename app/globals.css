@@ -8,8 +8,10 @@
   --app-primary-foreground: #ffffff;
   --panel-radius: 1.875rem;
   --shell-radius: 2rem;
-  --glass-blur: 64px;
-  --glass-blur-strong: 76px;
+  --glass-blur: 80px;
+  --glass-blur-strong: 100px;
+  /* Legacy chrome plate token — kept low if plates are reintroduced */
+  --chrome-frost-blur: 24px;
   /* Scrollbars — Firefox `scrollbar-color` (thumb / track) */
   --scrollbar-fg: rgba(255, 255, 255, 0.42);
   --scrollbar-bg: transparent;
@@ -29,7 +31,10 @@ body {
   color: var(--foreground);
   font-family: var(--font-stack);
   min-height: 100dvh;
+  min-height: 100lvh;
+  min-height: -webkit-fill-available;
   letter-spacing: -0.01em;
+  touch-action: manipulation;
 }
 
 /* —— Global scrollbars: thin, translucent glass (Firefox + WebKit) —— */
@@ -78,20 +83,33 @@ body {
   background: transparent;
 }
 
-/* Plain workspace canvas — fills the viewport; extends behind header + prompt bar */
+/* Shell is transparent — solid canvas + atmosphere live in layout as fixed layers */
 .app-bg {
   position: relative;
   min-height: 100dvh;
   height: 100%;
-  background: var(--background);
-  isolation: isolate;
+  background: transparent;
 }
 
-/* —— World simulation atmosphere: full-bleed behind all chrome including prompt dock —— */
+/* Root shell wrapper — do NOT use `zoom` here: it breaks `position: fixed` chrome
+   (header / sidebars / prompt) in WebKit/Chromium and can yield a blank canvas. */
+.app-ui-root-zoom {
+  min-height: 0;
+}
+
+/* Fixed full-bleed layers: match largest viewport height so paint reaches the physical bottom (iOS / dynamic toolbar). */
+.app-viewport-layer,
 .app-world-atmosphere {
-  position: absolute;
+  min-height: 100dvh;
+  min-height: 100lvh;
+  min-height: -webkit-fill-available;
+}
+
+/* —— World atmosphere: fixed to viewport so it always reaches the bottom (behind prompt bar) —— */
+.app-world-atmosphere {
+  position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
   pointer-events: none;
 }
@@ -99,10 +117,11 @@ body {
 .app-world-sphere {
   position: absolute;
   border-radius: 50%;
-  filter: blur(1px);
+  filter: blur(88px) saturate(1.35);
   mix-blend-mode: soft-light;
-  opacity: 0.55;
+  opacity: 0.38;
   animation: app-world-float 32s ease-in-out infinite;
+  will-change: transform;
 }
 
 .app-world-sphere--1 {
@@ -236,6 +255,103 @@ body {
   background: radial-gradient(circle, rgba(167, 139, 250, 0.32) 0%, transparent 70%);
   animation-delay: -25s;
   opacity: 0.48;
+}
+
+/* Premium accent wash — orange / teal / purple / magenta (very soft, transparent) */
+.app-world-sphere--11 {
+  width: min(52vw, 34rem);
+  height: min(52vw, 34rem);
+  right: -14%;
+  bottom: -8%;
+  background: radial-gradient(
+    circle at 40% 45%,
+    rgba(255, 140, 90, 0.22) 0%,
+    rgba(251, 146, 60, 0.08) 45%,
+    transparent 68%
+  );
+  animation-delay: -3s;
+  opacity: 0.32;
+  filter: blur(100px) saturate(1.4);
+}
+
+.app-world-sphere--12 {
+  width: min(44vw, 28rem);
+  height: min(44vw, 28rem);
+  left: -10%;
+  bottom: 12%;
+  background: radial-gradient(
+    circle at 55% 40%,
+    rgba(45, 212, 191, 0.2) 0%,
+    rgba(20, 184, 166, 0.07) 48%,
+    transparent 70%
+  );
+  animation-delay: -18s;
+  opacity: 0.3;
+  filter: blur(96px) saturate(1.35);
+}
+
+.app-world-sphere--13 {
+  width: min(38vw, 26rem);
+  height: min(38vw, 26rem);
+  left: 38%;
+  top: -6%;
+  background: radial-gradient(
+    circle at 50% 55%,
+    rgba(167, 139, 250, 0.2) 0%,
+    rgba(124, 58, 237, 0.07) 50%,
+    transparent 72%
+  );
+  animation-delay: -11s;
+  opacity: 0.28;
+  filter: blur(104px) saturate(1.42);
+}
+
+.app-world-sphere--14 {
+  width: min(40vw, 27rem);
+  height: min(40vw, 27rem);
+  right: 12%;
+  top: 28%;
+  background: radial-gradient(
+    circle at 45% 50%,
+    rgba(236, 72, 153, 0.18) 0%,
+    rgba(219, 39, 119, 0.06) 52%,
+    transparent 74%
+  );
+  animation-delay: -26s;
+  opacity: 0.26;
+  filter: blur(92px) saturate(1.38);
+}
+
+/* —— Subtle white vignette: lifts top nav + bottom prompt against the wash —— */
+.app-chrome-vignette {
+  pointer-events: none;
+  position: fixed;
+  inset-inline: 0;
+  z-index: 2;
+}
+
+.app-chrome-vignette--top {
+  top: 0;
+  height: min(44vh, 36rem);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.58) 0%,
+    rgba(255, 255, 255, 0.14) 42%,
+    rgba(255, 255, 255, 0.02) 72%,
+    transparent 100%
+  );
+}
+
+.app-chrome-vignette--bottom {
+  bottom: 0;
+  height: min(52vh, 40rem);
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.52) 0%,
+    rgba(255, 255, 255, 0.1) 48%,
+    rgba(255, 255, 255, 0.02) 74%,
+    transparent 100%
+  );
 }
 
 .app-world-globe {
@@ -514,8 +630,8 @@ body {
   -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.4);
 }
 
+/* No position here — asides use Tailwind `fixed` so they stay viewport-anchored with the atmosphere */
 .glass-sidebar-float {
-  position: relative;
   border-radius: var(--shell-radius);
   background:
     radial-gradient(
@@ -757,6 +873,12 @@ body {
   min-height: 0;
 }
 
+/* Single scroll surface: main canvas only; chrome stays fixed */
+.app-main-canvas {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+
 /* Accent label — subtle glow for selected UI */
 .accent-glow {
   text-shadow: 0 0 24px rgba(59, 108, 255, 0.25);
@@ -765,7 +887,7 @@ body {
 /* —— Thin dock header (single row, concentric with app squircles) —— */
 .dock-ambient {
   position: relative;
-  z-index: 20;
+  z-index: auto;
   isolation: isolate;
 }
 
@@ -777,8 +899,89 @@ body {
     rgba(242, 242, 247, 0.2) 55%,
     transparent 100%
   );
-  backdrop-filter: blur(40px) saturate(1.28);
-  -webkit-backdrop-filter: blur(40px) saturate(1.28);
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.22);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.22);
+}
+
+/* Full-width liquid-glass plates behind top / bottom chrome (backdrop samples scrolling canvas) */
+.chrome-frost-plate {
+  pointer-events: none;
+}
+
+.chrome-frost-plate--top {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(248, 248, 250, 0.06) 55%,
+    transparent 100%
+  );
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  mask-image: linear-gradient(180deg, black 0%, black 84%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, black 0%, black 84%, transparent 100%);
+}
+
+.chrome-frost-plate--bottom {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 0;
+  height: min(52vh, 22rem);
+  border-radius: 1.75rem 1.75rem 0 0;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(248, 248, 250, 0.05) 52%,
+    transparent 100%
+  );
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  mask-image: linear-gradient(0deg, black 0%, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(0deg, black 0%, black 80%, transparent 100%);
+}
+
+@media (min-width: 640px) {
+  .chrome-frost-plate--bottom {
+    border-radius: 2rem 2rem 0 0;
+  }
+}
+
+/* When prompt bar is collapsed to logo FAB — shorter hairline only */
+.chrome-frost-plate--bottom.chrome-frost-plate--bottom-compact {
+  height: min(16vh, 5rem);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  mask-image: linear-gradient(0deg, black 0%, black 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(0deg, black 0%, black 70%, transparent 100%);
+}
+
+@media (min-width: 640px) {
+  .chrome-frost-plate--bottom.chrome-frost-plate--bottom-compact {
+    height: min(14vh, 5.5rem);
+  }
+}
+
+/* Minimized prompt dock: single circular glass control — blur is round, no full-width bar behind it */
+.bottomdock-fab {
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  box-shadow:
+    0 8px 28px rgba(15, 25, 45, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(56px) saturate(1.22);
+  -webkit-backdrop-filter: blur(56px) saturate(1.22);
+}
+
+.rail-collapsed-fab {
+  flex-shrink: 0;
+}
+
+.dock-circle-btn--logo {
+  padding: 0;
 }
 
 .dock-ambient--minimal .glass-dock {
@@ -815,8 +1018,9 @@ body {
     0 8px 32px rgba(20, 35, 55, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
     inset 0 -1px 0 rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.4);
-  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.4);
+  /* Light glass on the pill only — no full-width frost plate */
+  backdrop-filter: blur(28px) saturate(1.22);
+  -webkit-backdrop-filter: blur(28px) saturate(1.22);
 }
 
 .glass-dock-segment {
@@ -855,7 +1059,101 @@ body {
 
 /* —— Bottom dock (Safari-style): prompt + Sim OS, spring minimize —— */
 .bottomdock-water {
+  position: relative;
   transition: max-width 520ms cubic-bezier(0.34, 1.25, 0.64, 1);
+}
+
+/* Soft frosted column above the dock — long blur + feathered mask (no harsh cut into canvas) */
+.bottomdock-water::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  z-index: 0;
+  height: min(18rem, 44vh);
+  pointer-events: none;
+  border-radius: 1.35rem 1.35rem 0 0;
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.26) 0%,
+    rgba(250, 250, 252, 0.14) 18%,
+    rgba(245, 246, 250, 0.06) 45%,
+    rgba(242, 242, 247, 0.02) 68%,
+    transparent 100%
+  );
+  backdrop-filter: blur(48px) saturate(1.22);
+  -webkit-backdrop-filter: blur(48px) saturate(1.22);
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.65) 22%,
+    rgba(0, 0, 0, 0.28) 48%,
+    rgba(0, 0, 0, 0.08) 72%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.65) 22%,
+    rgba(0, 0, 0, 0.28) 48%,
+    rgba(0, 0, 0, 0.08) 72%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+@media (min-width: 640px) {
+  .bottomdock-water::before {
+    border-radius: 1.5rem 1.5rem 0 0;
+    backdrop-filter: blur(56px) saturate(1.24);
+    -webkit-backdrop-filter: blur(56px) saturate(1.24);
+  }
+}
+
+@media (min-width: 1024px) {
+  .bottomdock-water::before {
+    border-radius: 1.75rem 1.75rem 0 0;
+    backdrop-filter: blur(64px) saturate(1.26);
+    -webkit-backdrop-filter: blur(64px) saturate(1.26);
+  }
+}
+
+@keyframes bottomdock-liquid-spring {
+  0% {
+    transform: scale(0.93) translateY(0.6rem);
+    opacity: 0.88;
+    border-radius: 2rem;
+  }
+  58% {
+    transform: scale(1.018) translateY(-3px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.bottomdock-water--scroll-spring .bottomdock-shell {
+  animation: bottomdock-liquid-spring 0.56s cubic-bezier(0.34, 1.45, 0.64, 1) both;
+  transform-origin: 50% 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bottomdock-water--scroll-spring .bottomdock-shell {
+    animation: none;
+  }
+}
+
+/* Wide single-row dock when a desktop rail is collapsed */
+.bottomdock-shell--wide {
+  border-radius: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .bottomdock-shell--wide {
+    border-radius: 1.35rem;
+  }
 }
 
 .bottomdock-shell {

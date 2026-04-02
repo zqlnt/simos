@@ -1,7 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { AppShell } from "@/components/AppShell";
 import { AppChromeProvider } from "@/context/AppChromeContext";
+import { WorldAtmosphere } from "@/components/WorldAtmosphere";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   title: {
@@ -18,11 +25,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full min-h-[100dvh] antialiased">
-      <body className="min-h-[100dvh] h-full overflow-hidden bg-[var(--background)]">
-        <AppChromeProvider>
-          <AppShell>{children}</AppShell>
-        </AppChromeProvider>
+    <html lang="en" className="h-full min-h-[100dvh] min-h-[100lvh] bg-[var(--background)] antialiased">
+      <body className="relative min-h-[100dvh] min-h-[100lvh] min-h-[-webkit-fill-available]">
+        {/* Full-viewport base — fixed layers are siblings of overflow-hidden shell so body overflow does not clip them */}
+        <div
+          className="app-viewport-layer pointer-events-none fixed inset-0 z-0 bg-[var(--background)]"
+          aria-hidden
+        />
+        <WorldAtmosphere />
+        <div
+          className="app-chrome-vignette app-chrome-vignette--top"
+          aria-hidden
+        />
+        <div className="app-ui-root-zoom relative z-10 flex h-[100dvh] max-h-[100dvh] min-h-0 flex-col overflow-hidden">
+          <AppChromeProvider>
+            <AppShell>{children}</AppShell>
+          </AppChromeProvider>
+        </div>
       </body>
     </html>
   );

@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronUp, PanelRight } from "lucide-react";
+import { ChevronUp, Menu, PanelLeft, PanelRight, RotateCcw } from "lucide-react";
 import { DockRailCircle } from "@/components/DockChrome";
-import { SimLogo } from "@/components/SimLogo";
 import { WorkspaceScopePills } from "@/components/WorkspaceScopePills";
 import { useAppChrome } from "@/context/AppChromeContext";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
@@ -33,47 +32,93 @@ export function HeaderActionBar({
     toggleLeft,
     topChromeHidden,
     toggleTopChrome,
+    resetMainView,
+    scrollChromeActive,
   } = useAppChrome();
 
   const minimalChrome = leftCollapsed && rightCollapsed;
+  const workspaceScrollStrip = scrollChromeActive && !topChromeHidden;
 
   if (topChromeHidden) {
     return null;
   }
 
+  if (workspaceScrollStrip) {
+    return (
+      <header
+        className="dock-ambient dock-ambient--workspace-scroll relative z-0 shrink-0"
+        data-workspace-scroll="true"
+      >
+        <div className="relative z-[1] px-2 pb-1.5 pt-[calc(0.375rem+env(safe-area-inset-top))] sm:px-3 sm:pb-1.5 sm:pt-[calc(0.5rem+env(safe-area-inset-top))] lg:px-3 lg:pb-2 lg:pt-[calc(0.5rem+env(safe-area-inset-top))]">
+          <div className="mx-auto flex max-w-[min(80rem,100%)] items-center gap-1.5 sm:gap-2">
+            <DockRailCircle side="left" forceVisible />
+            <div className="glass-dock flex min-h-[2.5rem] min-w-0 flex-1 items-center gap-1.5 overflow-hidden rounded-full px-2 py-1 sm:min-h-[2.75rem] sm:gap-2 sm:px-3">
+              <span className="hidden shrink-0 text-[10px] font-semibold uppercase tracking-[0.12em] text-gray-500 sm:inline sm:text-[11px]">
+                Workspace
+              </span>
+              <div className="min-w-0 flex-1 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div className="flex min-w-0 justify-center sm:justify-start">
+                  <WorkspaceScopePills variant="dock" />
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={resetMainView}
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/35 bg-white/20 text-gray-600 hover:bg-white/40"
+                aria-label="Reset view"
+                title="Scroll to top"
+              >
+                <RotateCcw className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
+              </button>
+            </div>
+            <DockRailCircle side="right" forceVisible />
+          </div>
+        </div>
+      </header>
+    );
+  }
+
   return (
     <header
-      className={`dock-ambient dock-ambient--frost z-30 shrink-0 px-2 py-1.5 sm:px-3 lg:py-2 ${minimalChrome ? "dock-ambient--minimal" : ""}`}
+      className={`dock-ambient relative z-0 shrink-0 ${minimalChrome ? "dock-ambient--minimal" : ""}`}
     >
-      <div className="mx-auto flex max-w-[min(80rem,100%)] items-center gap-1.5 sm:gap-2.5">
-        <div
-          className={`glass-dock flex min-h-[2.75rem] min-w-0 flex-1 items-center gap-1 rounded-full px-2 py-1 sm:gap-2 sm:px-3 ${minimalChrome ? "max-sm:min-h-[2.5rem] max-sm:gap-0.5 max-sm:px-1.5" : ""}`}
-        >
+      <div className="relative z-[1] px-2 pb-1.5 pt-[calc(0.375rem+env(safe-area-inset-top))] sm:px-3 sm:pb-1.5 sm:pt-[calc(0.5rem+env(safe-area-inset-top))] lg:px-3 lg:pb-2 lg:pt-[calc(0.5rem+env(safe-area-inset-top))]">
+        <div className="mx-auto flex max-w-[min(80rem,100%)] items-center gap-1.5 sm:gap-2.5">
+          <DockRailCircle side="left" />
+          <div
+            className={`glass-dock flex min-h-[2.75rem] min-w-0 flex-1 items-center gap-1 rounded-full px-2 py-1 sm:gap-2 sm:px-3 ${minimalChrome ? "min-h-[2.5rem] py-0.5 max-sm:min-h-[2.5rem] max-sm:gap-0.5 max-sm:px-1.5 sm:min-h-[2.5rem] sm:py-0.5" : ""}`}
+          >
           {lg ? (
-            leftCollapsed ? (
+            minimalChrome ? (
+              <Link
+                href="/"
+                className={`flex shrink-0 items-center rounded-full px-2 py-1 ${logoFocus}`}
+              >
+                <span className="text-[12px] font-semibold tracking-tight text-gray-900 sm:text-[13px]">
+                  SimOS
+                </span>
+              </Link>
+            ) : leftCollapsed ? (
               <button
                 type="button"
                 onClick={toggleLeft}
-                className={`flex shrink-0 items-center rounded-full py-0.5 pl-0.5 pr-1 ${logoFocus}`}
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/35 bg-white/20 text-gray-700 hover:bg-white/35 ${logoFocus}`}
                 aria-label="Expand navigation"
                 aria-pressed={false}
               >
-                <SimLogo width={56} height={22} className="opacity-[0.96]" />
+                <PanelLeft className="h-[18px] w-[18px]" strokeWidth={2} aria-hidden />
               </button>
             ) : (
               <Link
                 href="/"
-                className={`flex shrink-0 items-center gap-2 rounded-full py-0.5 pl-0.5 pr-2 ${logoFocus}`}
+                className={`flex min-w-0 shrink-0 flex-col justify-center rounded-full px-2 py-0.5 leading-none ${logoFocus}`}
               >
-                <SimLogo width={56} height={22} className="opacity-[0.96]" />
-                <div className="hidden min-w-0 flex-col leading-none sm:flex">
-                  <span className="truncate text-[12px] font-semibold tracking-tight text-gray-900">
-                    simOS
-                  </span>
-                  <span className="text-[9px] font-medium uppercase tracking-[0.14em] text-[var(--app-primary)]">
-                    workspace
-                  </span>
-                </div>
+                <span className="truncate text-[12px] font-semibold tracking-tight text-gray-900">
+                  simOS
+                </span>
+                <span className="text-[9px] font-medium uppercase tracking-[0.14em] text-[var(--app-primary)]">
+                  workspace
+                </span>
               </Link>
             )
           ) : (
@@ -84,9 +129,9 @@ export function HeaderActionBar({
                 aria-expanded={mobileMenuOpen}
                 aria-controls={panelId}
                 aria-label={mobileMenuOpen ? "Close navigation" : "Open navigation"}
-                className={`flex items-center rounded-full py-0.5 pl-0.5 pr-0.5 ${logoFocus}`}
+                className={`flex h-9 w-9 items-center justify-center rounded-full border border-white/35 bg-white/20 text-gray-800 hover:bg-white/35 ${logoFocus}`}
               >
-                <SimLogo width={52} height={20} className="opacity-[0.96]" />
+                <Menu className="h-[18px] w-[18px]" strokeWidth={2} aria-hidden />
               </button>
               <Link
                 href="/"
@@ -97,15 +142,28 @@ export function HeaderActionBar({
             </div>
           )}
 
-          <div className="mx-0.5 hidden h-5 w-px bg-gradient-to-b from-transparent via-white/45 to-transparent sm:block" />
+          {!(minimalChrome && lg) ? (
+            <>
+              <div className="mx-0.5 hidden h-5 w-px bg-gradient-to-b from-transparent via-white/45 to-transparent sm:block" />
 
-          <div
-            className={`min-w-0 flex-1 ${minimalChrome ? "max-sm:max-w-[min(52vw,11rem)]" : ""}`}
-          >
-            <WorkspaceScopePills variant="dock" />
-          </div>
+              <div
+                className={`min-w-0 flex-1 ${minimalChrome ? "max-sm:max-w-[min(52vw,11rem)]" : ""}`}
+              >
+                <WorkspaceScopePills variant="dock" />
+              </div>
+            </>
+          ) : null}
 
           <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-1.5">
+            <button
+              type="button"
+              onClick={resetMainView}
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/35 bg-white/20 text-gray-600 hover:bg-white/40"
+              aria-label="Reset view"
+              title="Reset view — scroll to top"
+            >
+              <RotateCcw className="h-3.5 w-3.5" strokeWidth={2} aria-hidden />
+            </button>
             {minimalChrome && lg ? (
               <button
                 type="button"
@@ -147,19 +205,19 @@ export function HeaderActionBar({
                 3D
               </button>
             </div>
+            <DockRailCircle side="right" />
           </div>
+          </div>
+
+          <button
+            type="button"
+            className="dock-circle-btn shrink-0 lg:hidden"
+            onClick={() => setRightMobileOpen(true)}
+            aria-label="Open Sim OS panel"
+          >
+            <PanelRight className="h-[18px] w-[18px]" strokeWidth={2} />
+          </button>
         </div>
-
-        <DockRailCircle side="right" />
-
-        <button
-          type="button"
-          className="dock-circle-btn shrink-0 lg:hidden"
-          onClick={() => setRightMobileOpen(true)}
-          aria-label="Open Sim OS panel"
-        >
-          <PanelRight className="h-[18px] w-[18px]" strokeWidth={2} />
-        </button>
       </div>
     </header>
   );

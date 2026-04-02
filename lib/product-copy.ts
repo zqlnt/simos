@@ -5,6 +5,9 @@ export const simBrand = {
     "A persistent control surface for synthetic environments, agent processes, and cinematic world generation.",
   supporting:
     "Move between world oversight, first-person process, multimodal creation, and final form without losing continuity.",
+  /** Home hero — technology + simOS components; no “UI” framing */
+  homeSubtitle:
+    "Technology and simOS components stay in one workspace: tiles open Simium, Simulator, Simulatia, and operations — same rhythm as the operations dashboard. Shortcut widgets on the home screen keep Sim, Simium, and Simulatia one tap away.",
 } as const;
 
 export const simHomeCards = {

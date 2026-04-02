@@ -15,6 +15,10 @@ export function WorldAtmosphere() {
       {/* Smaller accent spheres */}
       <div className="app-world-sphere app-world-sphere--9" />
       <div className="app-world-sphere app-world-sphere--10" />
+      <div className="app-world-sphere app-world-sphere--11" />
+      <div className="app-world-sphere app-world-sphere--12" />
+      <div className="app-world-sphere app-world-sphere--13" />
+      <div className="app-world-sphere app-world-sphere--14" />
       {/* Wireframe globe — world / simulation */}
       <svg
         className="app-world-globe"
