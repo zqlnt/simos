@@ -588,6 +588,25 @@ body {
   z-index: 1;
 }
 
+@media (hover: hover) {
+  .glass-panel {
+    transition:
+      border-color 0.28s ease,
+      box-shadow 0.28s ease,
+      transform 0.28s ease;
+  }
+
+  .glass-panel:hover {
+    border-color: rgba(255, 255, 255, 0.88);
+    box-shadow:
+      0 10px 36px rgba(15, 25, 45, 0.07),
+      0 24px 64px rgba(20, 35, 60, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.92),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.32);
+    transform: translateY(-1px);
+  }
+}
+
 .glass-shell {
   position: relative;
   isolation: isolate;
@@ -763,6 +782,25 @@ body {
 .glass-kpi > *:not(.glass-corner-glow) {
   position: relative;
   z-index: 1;
+}
+
+@media (hover: hover) {
+  .glass-kpi {
+    transition:
+      border-color 0.28s ease,
+      box-shadow 0.28s ease,
+      transform 0.28s ease;
+  }
+
+  .glass-kpi:hover {
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow:
+      0 10px 32px rgba(15, 25, 45, 0.07),
+      0 20px 56px rgba(59, 108, 255, 0.09),
+      inset 0 1px 0 rgba(255, 255, 255, 0.88),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.26);
+    transform: translateY(-2px);
+  }
 }
 
 /* Grids — stagger orb timing so neighbouring tiles feel less identical */

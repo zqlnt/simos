@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { Boxes, Glasses, Layers2, PlayCircle } from "lucide-react";
+import { MediaFillImage } from "@/components/MediaFillImage";
 import { SimulatorCopySurface } from "@/components/simulator/SimulatorCopySurface";
 import { SectionList } from "@/components/SectionList";
 import { PageHeader } from "@/components/PageHeader";
 import { simulatorSections } from "@/lib/nav";
+import { media } from "@/lib/media-assets";
+import { simulatorNarrative } from "@/lib/product-narrative";
+import { ProductLoopVideo } from "@/components/ProductLoopVideo";
 import {
   AssetLibraryViz,
   BlenderStudioViz,
@@ -13,11 +17,10 @@ import {
   TimelineViz,
   WorldsNestedViz,
 } from "@/components/viz";
+import { PRODUCT_PREVIEW_VIDEOS } from "@/lib/product-videos";
 
-/** Local asset under public/images/simulator/ — filename is URL-encoded for spaces/parentheses */
-const SIMULATOR_PREVIEW_MP4 =
-  "/images/simulator/" +
-  encodeURIComponent("AI Video Generator Feb 2 2026 (1) (2).mp4");
+const textHeavy =
+  "rounded-xl border border-white/15 bg-white/[0.04] px-4 py-5 sm:px-6 sm:py-6 transition-[box-shadow,border-color] duration-300 hover:border-white/22 hover:shadow-lg hover:shadow-black/[0.06]";
 
 export default function SimulatorPage() {
   return (
@@ -31,25 +34,112 @@ export default function SimulatorPage() {
 
       <section
         id="simulator-preview"
-        className="glass-panel scroll-mt-28 overflow-hidden rounded-[1.5rem] p-2 sm:p-3"
-        aria-label="Simulator preview video"
+        className="glass-panel scroll-mt-28 space-y-4 overflow-hidden rounded-[1.5rem] p-3 sm:p-4"
+        aria-label="Simulator studio motion"
       >
-        <div className="relative mx-auto w-full max-w-3xl overflow-hidden rounded-[1.25rem] bg-black/[0.06] ring-1 ring-white/25">
-          <div className="relative aspect-video w-full">
-            <video
-              className="absolute inset-0 h-full w-full object-contain"
-              controls
-              playsInline
-              preload="metadata"
-              aria-label="Simulator pipeline preview"
-            >
-              <source src={SIMULATOR_PREVIEW_MP4} type="video/mp4" />
-            </video>
+        <div className="space-y-1.5 px-0.5">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-500">
+            Creation layer
+          </p>
+          <p className="text-sm leading-relaxed text-gray-700">{simulatorNarrative.lead}</p>
+        </div>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start">
+          <div className="min-w-0">
+            <ProductLoopVideo
+              src={PRODUCT_PREVIEW_VIDEOS.simulator}
+              hoverTitle="Studio loop"
+              hoverSubline="Structure, light, editable scenarios"
+            />
+          </div>
+          <div className="flex min-w-0 flex-col justify-center gap-2">
+            <p className="text-sm leading-relaxed text-gray-700">{simulatorNarrative.loop}</p>
           </div>
         </div>
-        <p className="mt-2 px-1 text-center text-[11px] text-gray-500 sm:px-2">
-          Preview — Dome pipeline and simulation surface (local asset).
+      </section>
+
+      <section className={`glass-panel ${textHeavy}`} aria-label="Simulator studio note">
+        <p className="text-sm leading-relaxed text-gray-700">
+          {simulatorNarrative.interludeFigureToShelf}
         </p>
+      </section>
+
+      <section
+        className="glass-panel space-y-4 overflow-hidden rounded-[1.5rem] p-3 sm:p-4"
+        aria-label="Simulator figure pass"
+      >
+        <p className="px-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-500">
+          Figure in scene
+        </p>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-center">
+          <div className="min-w-0">
+            <ProductLoopVideo
+              src={media.simulator.figureWalk}
+              aspectClassName="aspect-[16/10]"
+              hoverTitle="Figure pass"
+              hoverSubline="Camera, posture, scene construction"
+            />
+          </div>
+          <div className="flex min-w-0 flex-col gap-2">
+            <p className="text-sm leading-relaxed text-gray-700">{simulatorNarrative.figure}</p>
+          </div>
+        </div>
+      </section>
+
+      <section className={`glass-panel ${textHeavy}`} aria-label="Simulator shelf note">
+        <p className="text-sm leading-relaxed text-gray-700">
+          {simulatorNarrative.interludeShelfToBrand}
+        </p>
+      </section>
+
+      <section
+        className="glass-panel space-y-6 overflow-hidden rounded-[1.5rem] p-3 sm:p-4"
+        aria-label="Simulator shelf still"
+      >
+        <p className="px-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-500">
+          Shelf frame
+        </p>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-center">
+          <div className="mx-auto min-w-0 max-w-xs">
+            <MediaFillImage
+              src={media.simulator.still2}
+              alt="Simulator shelf still — meshes and materials"
+              aspectClassName="aspect-[4/5]"
+              hoverTitle="Shelf frame"
+              hoverSubline="Meshes, materials, rigs"
+            />
+          </div>
+          <div className="flex min-w-0 flex-col gap-2">
+            <p className="text-sm leading-relaxed text-gray-700">{simulatorNarrative.still}</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-center">
+          <div className="flex min-w-0 flex-col gap-2 lg:order-2">
+            <p className="text-sm leading-relaxed text-gray-700">{simulatorNarrative.brand}</p>
+          </div>
+          <div className="mx-auto min-w-0 max-w-xs lg:order-1">
+            <MediaFillImage
+              src={media.simulator.projectLogo}
+              alt="Project mark and scene language"
+              aspectClassName="aspect-[4/5]"
+              hoverTitle="Project mark"
+              hoverSubline="Coherent across iterations"
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-center">
+          <div className="mx-auto min-w-0 max-w-xs">
+            <MediaFillImage
+              src={media.simulator.paragraph}
+              alt="Typography as structure in the build"
+              aspectClassName="aspect-[4/5]"
+              hoverTitle="Type & layout"
+              hoverSubline="Structure, not decoration"
+            />
+          </div>
+          <div className="flex min-w-0 flex-col gap-2">
+            <p className="text-sm leading-relaxed text-gray-700">{simulatorNarrative.paragraph}</p>
+          </div>
+        </div>
       </section>
 
       <section
